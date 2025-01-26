@@ -161,20 +161,25 @@ def extractSongs(songPaths, format, metadatum):
                 jacketPath,
                 cmdEscape(title),
                 cmdEscape(artist),
-                VERSIONS[meta["version"]], meta["genre"],
+                VERSIONS[meta["version"]],
+                meta["genre"],
                 int(meta["release_year"]),
-                int(songId), int(meta["version"]), bpm,
+                int(songId),
+                int(meta["version"]),
+                bpm,
                 outputFile,
                 )
             try:
-                subprocess.run(exec_cmd, shell=False, check=True) \
+                print("Executing command:", exec_cmd)
+                subprocess.run(exec_cmd, shell=True, check=True) \
                 if cmd else shutil.copy2(songPath, outputFile)
             except subprocess.CalledProcessError as e:
                 print("\n===================================\n" \
-                    + exec_cmd + \
+                    + str(exec_cmd) + \
                     "\n===================================\n")
                 print("ERROR", e.stderr)
-
+                print("Return code:", e.returncode)  # Error code
+                print("Output:", e.output)  # Error message
 
 def getJacket(songPath, songId):
     songDir = os.path.dirname(songPath)
