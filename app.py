@@ -40,7 +40,8 @@ VERSIONS = {
 if "Windows" == platform.system():
     FFMPEG = r"ffmpeg.exe"
 else:
-    FFMPEG = r"/usr/bin/env ffmpeg"
+    # FFMPEG = r"/usr/bin/env ffmpeg"
+    FFMPEG = r"/opt/homebrew/bin/ffmpeg"
 
 OVERWRITE = False
 
@@ -54,7 +55,11 @@ def CLI():
     # Fetch game folder path
     while True:
         gameFolder = input("Insert path to SDVX folder > ")
-        if os.path.exists(gameFolder) and "soundvoltex.dll" in os.listdir(gameFolder + "\\modules"):
+        modulesDir = gameFolder + "/modules"
+        if "Windows" == platform.system():
+            modulesDir = modulesDir.replace("/", "\\")
+        
+        if os.path.exists(gameFolder) and "soundvoltex.dll" in os.listdir(modulesDir):
             print("OK, that path looks legit, yesssss")
             break
         else:
@@ -192,7 +197,7 @@ def extractSongsMetadata(songPaths, gameFolder):
     songIds = [int(os.path.basename(filename).split("_")[0]) for filename in songPaths]
 
     with open(os.path.join(gameFolder, relativeMusicDbPath), "r", encoding="Shift-JIS", errors="ignore") as xmlFile:
-        soup = BeautifulSoup(xmlFile.read(), "lxml")
+        soup = BeautifulSoup(xmlFile.read(), features="xml")
 
     metas = soup.find_all("music")
     for meta in metas:
