@@ -140,6 +140,9 @@ def extractSongs(songPaths, format, metadatum):
             title = meta["title"]
             artist = meta["artist"]
 
+            # filename ends "_fx"
+            if filename[:-3].endswith("_fx"):
+                title = title + " (w/ FX)"
 
             if filename.endswith(".2dx"):
                 # .2dx file needs convert to wave files
