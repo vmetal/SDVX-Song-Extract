@@ -205,22 +205,22 @@ def extractSongsMetadata(songPaths, gameFolder):
     songIds = [int(os.path.basename(filename).split("_")[0]) for filename in songPaths]
 
     with open(os.path.join(gameFolder, relativeMusicDbPath), "r", encoding="Shift-JIS", errors="ignore") as xmlFile:
-        soup = BeautifulSoup(xmlFile.read(), features="xml")
+        soup = BeautifulSoup(xmlFile.read(), features="lxml")
 
-    metas = soup.find_all("music")
-    for meta in metas:
-        metadatum[int(meta["id"])] = {
-            "title": fixBrokenChars(meta.find("title_name").text),
-            "artist": fixBrokenChars(meta.find("artist_name").text),
-            "genre": meta.find("genre").text,
-            # "title_sort": jaconv.h2z(meta.find("title_yomigana").text),
-            # "artist_sort": jaconv.h2z(meta.find("artist_yomigana").text),
-            "release_year": meta.find("distribution_date").text[:4],
-            "version": int(meta.find("version").text),
-            "bpm_max": (int(meta.find("bpm_max").text) / 100),
-            "bpm_min": (int(meta.find("bpm_min").text) / 100),
-            "volume": int(meta.find("volume").text) / 127.0,
-            "track": int(meta["id"])
+    musics = soup.find_all("music")
+    for music in musics:
+        metadatum[int(music["id"])] = {
+            "title": fixBrokenChars(music.find("title_name").text),
+            "artist": fixBrokenChars(music.find("artist_name").text),
+            "genre": music.find("genre").text,
+            # "title_sort": jaconv.h2z(music.find("title_yomigana").text),
+            # "artist_sort": jaconv.h2z(music.find("artist_yomigana").text),
+            "release_year": music.find("distribution_date").text[:4],
+            "version": int(music.find("version").text),
+            "bpm_max": (int(music.find("bpm_max").text) / 100),
+            "bpm_min": (int(music.find("bpm_min").text) / 100),
+            "volume": int(music.find("volume").text) / 127.0,
+            "track": int(music["id"])
         }
     
     metadatum[9001] = {
