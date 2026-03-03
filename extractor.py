@@ -96,6 +96,11 @@ class SongExtractor:
 
     def _convert(self, src: Path, jk: Path, meta: dict, dst: Path):
         """Execute ffmpeg to convert audio and embed metadata/jacket."""
+
+        bpm = meta["bpm_min"]
+        if not bpm == meta["bpm_max"]:
+            bpm = meta["bpm_max"]
+
         cmd = [
             self.ffmpeg, "-y", "-ss", "0.9",
             "-i", str(src),
@@ -105,8 +110,12 @@ class SongExtractor:
             "-metadata", f"title={meta['title']}",
             "-metadata", f"artist={meta['artist']}",
             "-metadata", f"album={SDVXConfig.VERSIONS.get(meta['version'], '')}",
+            "-metadata", f"album_artist=Various Artist",
+            "-metadata", f"disc={meta['version']}",
+            "-metadata", f"track={meta['track']}",
             "-metadata", f"genre={meta['genre']}",
-            "-metadata", f"date={meta['release_year']}",
+            "-metadata", f"date={int(meta['release_year'])}",
+            "-metadata", f"TBPM={bpm}",
             str(dst)
         ]
         if self.format == "mp3":

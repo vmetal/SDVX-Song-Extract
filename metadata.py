@@ -38,6 +38,7 @@ class MetadataManager:
                     "release_year": info.find("distribution_date").text[:4] if info.find("distribution_date") else "2012",
                     "bpm_max": int(info.find("bpm_max").text) / 100 if info.find("bpm_max") else 0,
                     "bpm_min": int(info.find("bpm_min").text) / 100 if info.find("bpm_min") else 0,
+                    "track": m_id,
                 }
             except Exception as e:
                 logger.warning(f"Failed to parse music entry: {e}")
