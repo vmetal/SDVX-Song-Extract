@@ -5,6 +5,7 @@ Extracts music from the new .s3v (.asf) file containers
 
 extracted each music are included cover images, album name by versions, track numbers, and released year
 
+Forked from: [Walter's SDVX song extractor (Walter-o/SDVX-Song-Extract)](https://github.com/Walter-o/SDVX-Song-Extract)
 
 ## Require
 
